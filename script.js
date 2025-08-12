@@ -7,7 +7,7 @@ canvas.width = 1920;
 canvas.height = 1080;
 
 // ✅ [수정] 1. 총 이미지 프레임 수 (실제 개수로 변경!)
-const frameCount = 150; // 예시: 실제 프레임 수로 변경하세요!
+const frameCount = 121; // 예시: 실제 프레임 수로 변경하세요!
 
 // 이미지 경로를 생성하는 함수
 const currentFrame = index => (
