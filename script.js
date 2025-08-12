@@ -6,10 +6,10 @@ const context = canvas.getContext('2d');
 canvas.width = 1920;
 canvas.height = 1080;
 
-// ✅ [수정] 실제 이미지의 총 개수로 이 숫자를 변경하세요!
+// ✅ [필수 수정] 실제 이미지의 총 개수로 이 숫자를 변경하세요!
 const frameCount = 150; 
 
-// 이미지 경로를 생성하는 함수 (새 파일 이름 형식 적용)
+// 이미지 경로를 생성하는 함수
 const currentFrame = index => (
     `./images/0406.55.${index + 1}.png`
 );
@@ -42,7 +42,10 @@ gsap.to(frame, {
 // 4. 캔버스에 이미지 그리기 함수
 function render() {
     const img = images[frame.current];
-    if (img && img.complete) {
+    
+    // ✅ 이미지가 정상적으로 로드되었을 때만 그리도록 방어 코드를 추가했습니다.
+    // 'broken' state 오류를 방지합니다.
+    if (img && img.complete && img.naturalWidth !== 0) {
         context.clearRect(0, 0, canvas.width, canvas.height);
         context.drawImage(img, 0, 0, canvas.width, canvas.height);
     }
@@ -50,3 +53,12 @@ function render() {
 
 // 첫 번째 이미지가 로드되면 첫 화면을 그립니다.
 images[0].onload = render;
+
+// ✅ [오류 추적 기능 추가]
+// 모든 이미지에 에러 핸들러를 추가해서, 만약 특정 이미지가 깨졌거나
+// 로드에 실패하면 콘솔에 어떤 파일이 문제인지 정확히 알려줍니다.
+images.forEach((img) => {
+    img.onerror = () => {
+        console.error(`[오류] 이 이미지 파일을 불러올 수 없습니다 (깨졌거나 경로가 잘못됨): ${img.src}`);
+    };
+});
