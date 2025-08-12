@@ -6,24 +6,18 @@ const context = canvas.getContext('2d');
 canvas.width = 1920;
 canvas.height = 1080;
 
-// ==========================================================
 // ✅ [수정] 1. 총 이미지 프레임 수 (실제 개수로 변경!)
 const frameCount = 150; // 예시: 실제 프레임 수로 변경하세요!
-// ==========================================================
 
 // 이미지 경로를 생성하는 함수
 const currentFrame = index => (
-    // ==========================================================
-    // ✅ [수정] 2. 이미지 파일 경로와 이름 형식 (png로 변경)
     `./images/0406.55.${index + 1}.png`
-    // 예: 0406.55.1.png, 0406.55.2.png ...
-    // ==========================================================
 );
 
 // 2. 이미지 미리 불러오기 (Preloading)
 const images = [];
 // GSAP이 조작할 가상의 객체
-const frame = { current: 0 };
+const frame = { current: 0 }; 
 
 for (let i = 0; i < frameCount; i++) {
     const img = new Image();
@@ -33,28 +27,30 @@ for (let i = 0; i < frameCount; i++) {
 
 // 3. GSAP ScrollTrigger로 애니메이션 설정
 gsap.to(frame, {
-    current: frameCount - 1, // 0부터 시작해서 마지막 프레임(frameCount - 1)까지
-    roundProps: "current",   // current 값을 정수로 만듦
-    ease: "none",            // 일정한 속도로
+    current: frameCount - 1,
+    roundProps: "current",
+    ease: "none",
     scrollTrigger: {
-        trigger: ".scroll-container", // 애니메이션의 기준이 되는 요소
-        start: "top top",             // .scroll-container의 맨 위가 화면 맨 위에 닿을 때 시작
-        end: "bottom bottom",         // .scroll-container의 맨 아래가 화면 맨 아래에 닿을 때 끝
-        scrub: 0.8,                   // 스크롤과 애니메이션을 부드럽게 연결 (숫자가 클수록 더 부드러움)
-        pin: true,                    // 스크롤 동안 .scroll-container를 화면에 고정
-        onUpdate: render,             // 스크롤 할 때마다 render 함수 호출
+        trigger: ".scroll-container",
+        start: "top top",
+        end: "bottom bottom",
+        scrub: 0.8,
+        pin: true,
+        onUpdate: render,
     }
 });
 
 // 4. 캔버스에 이미지 그리기 함수
 function render() {
-    // frame.current는 GSAP이 업데이트하는 현재 프레임 번호
-    const img = images;
+    // ✅ [수정됨] 현재 프레임 번호에 맞는 이미지를 배열에서 가져옵니다.
+    const img = images[frame.current];
+    
+    // 이미지가 존재하고 로드가 완료되었을 때만 그립니다.
     if (img && img.complete) {
-        context.clearRect(0, 0, canvas.width, canvas.height); // 이전 프레임 지우기
-        context.drawImage(img, 0, 0, canvas.width, canvas.height); // 새 프레임 그리기
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        context.drawImage(img, 0, 0, canvas.width, canvas.height);
     }
 }
 
-// 첫 프레임 미리 그리기
-images.onload = render;
+// ✅ [수정됨] 첫 번째 이미지가 로드되면 render 함수를 호출하여 캔버스에 첫 화면을 그립니다.
+images[0].onload = render;
