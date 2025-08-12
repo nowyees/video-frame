@@ -7,23 +7,23 @@ canvas.width = 1920;
 canvas.height = 1080;
 
 // ==========================================================
-// ✅ [수정] 1. 총 이미지 프레임 수
-const frameCount = 150; 
+// ✅ [수정] 1. 총 이미지 프레임 수 (실제 개수로 변경!)
+const frameCount = 150; // 예시: 실제 프레임 수로 변경하세요!
 // ==========================================================
 
 // 이미지 경로를 생성하는 함수
 const currentFrame = index => (
     // ==========================================================
-    // ✅ [수정] 2. 이미지 파일 경로와 이름 형식
-    `./images/frame_${(index + 1).toString().padStart(4, '0')}.jpg`
-    // 예: frame_0001.jpg, frame_0002.jpg ...
+    // ✅ [수정] 2. 이미지 파일 경로와 이름 형식 (png로 변경)
+    `./images/0406.55.${index + 1}.png`
+    // 예: 0406.55.1.png, 0406.55.2.png ...
     // ==========================================================
 );
 
 // 2. 이미지 미리 불러오기 (Preloading)
 const images = [];
 // GSAP이 조작할 가상의 객체
-const frame = { current: 0 }; 
+const frame = { current: 0 };
 
 for (let i = 0; i < frameCount; i++) {
     const img = new Image();
@@ -49,9 +49,7 @@ gsap.to(frame, {
 // 4. 캔버스에 이미지 그리기 함수
 function render() {
     // frame.current는 GSAP이 업데이트하는 현재 프레임 번호
-    const img = images[frame.current];
-    
-    // 이미지가 로드되었을 때만 그리기 (오류 방지)
+    const img = images;
     if (img && img.complete) {
         context.clearRect(0, 0, canvas.width, canvas.height); // 이전 프레임 지우기
         context.drawImage(img, 0, 0, canvas.width, canvas.height); // 새 프레임 그리기
@@ -59,4 +57,4 @@ function render() {
 }
 
 // 첫 프레임 미리 그리기
-images[0].onload = render;
+images.onload = render;
