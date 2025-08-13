@@ -7,16 +7,16 @@ canvas.width = 1920;
 canvas.height = 1080;
 
 // =================================================================
-// ✅ [최종 테스트]
-// 문제의 원인을 확실히 파악하기 위해, 오류가 없는
-// placeholder 이미지 150개를 불러오도록 변경했습니다.
+// ✅ [필수] 여기를 반드시 수정하세요!
+// GitHub의 'images' 폴더 안에 있는 실제 이미지의 총 개수를
+// 정확하게 세어서 이 숫자를 변경해야 합니다.
 const frameCount = 150; 
 // =================================================================
 
 // 이미지 경로를 생성하는 함수
 const currentFrame = index => (
-    // ✅ [최종 테스트] 테스트용 이미지 경로로 변경
-    `https://placehold.co/1920x1080/000000/FFFFFF?text=Frame+${index + 1}`
+    // ✅ 원래 이미지 경로로 복구했습니다.
+    `./images/0406.55.${index + 1}.png`
 );
 
 // 2. 이미지 미리 불러오기 (Preloading)
@@ -25,8 +25,6 @@ const frame = { current: 0 };
 
 for (let i = 0; i < frameCount; i++) {
     const img = new Image();
-    // 다른 도메인의 이미지를 사용하기 위한 설정
-    img.crossOrigin = "anonymous";
     img.src = currentFrame(i);
     images.push(img);
 }
